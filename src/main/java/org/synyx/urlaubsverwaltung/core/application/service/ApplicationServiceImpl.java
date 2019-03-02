@@ -2,20 +2,15 @@
 package org.synyx.urlaubsverwaltung.core.application.service;
 
 import org.joda.time.DateMidnight;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
-
 import org.springframework.util.Assert;
-
 import org.synyx.urlaubsverwaltung.core.application.dao.ApplicationDAO;
 import org.synyx.urlaubsverwaltung.core.application.domain.Application;
 import org.synyx.urlaubsverwaltung.core.application.domain.ApplicationStatus;
 import org.synyx.urlaubsverwaltung.core.person.Person;
 
 import java.math.BigDecimal;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +18,7 @@ import java.util.Optional;
 /**
  * Implementation of interface {@link ApplicationService}.
  *
- * @author  Aljona Murygina - murygina@synyx.de
+ * @author Aljona Murygina - murygina@synyx.de
  */
 @Service
 class ApplicationServiceImpl implements ApplicationService {
@@ -39,7 +34,7 @@ class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Optional<Application> getApplicationById(Integer id) {
 
-        return Optional.ofNullable(applicationDAO.findOne(id));
+        return applicationDAO.findById(id);
     }
 
 
@@ -59,7 +54,7 @@ class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<Application> getApplicationsForACertainPeriodAndPerson(DateMidnight startDate, DateMidnight endDate,
-        Person person) {
+                                                                       Person person) {
 
         return applicationDAO.getApplicationsForACertainTimeAndPerson(startDate.toDate(), endDate.toDate(), person);
     }
@@ -67,7 +62,7 @@ class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<Application> getApplicationsForACertainPeriodAndState(DateMidnight startDate, DateMidnight endDate,
-        ApplicationStatus status) {
+                                                                      ApplicationStatus status) {
 
         return applicationDAO.getApplicationsForACertainTimeAndState(startDate.toDate(), endDate.toDate(), status);
     }
@@ -75,10 +70,10 @@ class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<Application> getApplicationsForACertainPeriodAndPersonAndState(DateMidnight startDate,
-        DateMidnight endDate, Person person, ApplicationStatus status) {
+                                                                               DateMidnight endDate, Person person, ApplicationStatus status) {
 
         return applicationDAO.getApplicationsForACertainTimeAndPersonAndState(startDate.toDate(), endDate.toDate(),
-                person, status);
+            person, status);
     }
 
 
@@ -87,13 +82,7 @@ class ApplicationServiceImpl implements ApplicationService {
 
         Assert.notNull(person, "Person to get overtime reduction for must be given.");
 
-        Optional<BigDecimal> overtimeReduction = Optional.ofNullable(applicationDAO.calculateTotalOvertimeOfPerson(
-                    person));
-
-        if (overtimeReduction.isPresent()) {
-            return overtimeReduction.get();
-        }
-
-        return BigDecimal.ZERO;
+        return Optional.ofNullable(applicationDAO.calculateTotalOvertimeOfPerson(person))
+            .orElse(BigDecimal.ZERO);
     }
 }

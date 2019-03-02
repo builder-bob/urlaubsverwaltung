@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.synyx.urlaubsverwaltung.core.settings.CalendarSettings;
 import org.synyx.urlaubsverwaltung.core.settings.SettingsService;
 import org.synyx.urlaubsverwaltung.core.sync.absence.Absence;
-import org.synyx.urlaubsverwaltung.core.sync.providers.CalendarProvider;
 
 import java.util.Optional;
 
@@ -22,14 +21,12 @@ public class CalendarSyncServiceImpl implements CalendarSyncService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CalendarSyncServiceImpl.class);
 
-    private SettingsService settingsService;
+    private final SettingsService settingsService;
     private final CalendarService calendarService;
 
     @Autowired
     public CalendarSyncServiceImpl(SettingsService settingsService, CalendarService calendarService) {
         this.settingsService = settingsService;
-
-
         this.calendarService = calendarService;
 
         LOG.info("The following calendar provider is configured: {}", calendarService.getCalendarProvider().getClass());
