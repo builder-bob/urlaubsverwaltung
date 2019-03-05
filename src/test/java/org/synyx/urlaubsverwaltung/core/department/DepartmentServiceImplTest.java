@@ -2,13 +2,10 @@ package org.synyx.urlaubsverwaltung.core.department;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.mockito.Mockito;
-
 import org.synyx.urlaubsverwaltung.core.application.domain.Application;
 import org.synyx.urlaubsverwaltung.core.application.domain.ApplicationStatus;
 import org.synyx.urlaubsverwaltung.core.application.service.ApplicationService;
@@ -20,10 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 
 
 /**
@@ -38,7 +32,7 @@ public class DepartmentServiceImplTest {
     private ApplicationService applicationService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         departmentDAO = Mockito.mock(DepartmentDAO.class);
         applicationService = Mockito.mock(ApplicationService.class);
@@ -48,7 +42,7 @@ public class DepartmentServiceImplTest {
 
 
     @Test
-    public void ensureCallDepartmentDAOSave() throws Exception {
+    public void ensureCallDepartmentDAOSave() {
 
         Department department = TestDataCreator.createDepartment();
 
@@ -59,7 +53,7 @@ public class DepartmentServiceImplTest {
 
 
     @Test
-    public void ensureCallDepartmentDAOFindOne() throws Exception {
+    public void ensureCallDepartmentDAOFindOne() {
 
         sut.getDepartmentById(42);
         Mockito.verify(departmentDAO).findOne(eq(42));
@@ -67,7 +61,7 @@ public class DepartmentServiceImplTest {
 
 
     @Test
-    public void ensureUpdateCallDepartmentDAOUpdate() throws Exception {
+    public void ensureUpdateCallDepartmentDAOUpdate() {
 
         Department department = TestDataCreator.createDepartment();
 
@@ -78,7 +72,7 @@ public class DepartmentServiceImplTest {
 
 
     @Test
-    public void ensureGetAllCallDepartmentDAOFindAll() throws Exception {
+    public void ensureGetAllCallDepartmentDAOFindAll() {
 
         sut.getAllDepartments();
 
@@ -87,7 +81,7 @@ public class DepartmentServiceImplTest {
 
 
     @Test
-    public void ensureGetManagedDepartmentsOfDepartmentHeadCallCorrectDAOMethod() throws Exception {
+    public void ensureGetManagedDepartmentsOfDepartmentHeadCallCorrectDAOMethod() {
 
         Person person = Mockito.mock(Person.class);
 
@@ -98,7 +92,7 @@ public class DepartmentServiceImplTest {
 
 
     @Test
-    public void ensureGetManagedDepartmentsOfSecondStageAuthorityCallCorrectDAOMethod() throws Exception {
+    public void ensureGetManagedDepartmentsOfSecondStageAuthorityCallCorrectDAOMethod() {
 
         Person person = Mockito.mock(Person.class);
 
@@ -109,7 +103,7 @@ public class DepartmentServiceImplTest {
 
 
     @Test
-    public void ensureGetAssignedDepartmentsOfMemberCallCorrectDAOMethod() throws Exception {
+    public void ensureGetAssignedDepartmentsOfMemberCallCorrectDAOMethod() {
 
         Person person = Mockito.mock(Person.class);
 
@@ -120,7 +114,7 @@ public class DepartmentServiceImplTest {
 
 
     @Test
-    public void ensureDeletionIsNotExecutedIfDepartmentWithGivenIDDoesNotExist() throws Exception {
+    public void ensureDeletionIsNotExecutedIfDepartmentWithGivenIDDoesNotExist() {
 
         int id = 0;
         Mockito.when(departmentDAO.findOne(id)).thenReturn(null);
@@ -132,7 +126,7 @@ public class DepartmentServiceImplTest {
 
 
     @Test
-    public void ensureDeleteCallFindOneAndDelete() throws Exception {
+    public void ensureDeleteCallFindOneAndDelete() {
 
         int id = 0;
         Mockito.when(departmentDAO.findOne(id)).thenReturn(TestDataCreator.createDepartment());
@@ -145,7 +139,7 @@ public class DepartmentServiceImplTest {
 
 
     @Test
-    public void ensureSetLastModificationOnUpdate() throws Exception {
+    public void ensureSetLastModificationOnUpdate() {
 
         Department department = Mockito.mock(Department.class);
 
@@ -312,19 +306,19 @@ public class DepartmentServiceImplTest {
 
         // Ensure fetches applications for leave for every department member
         Mockito.verify(applicationService)
-            .getApplicationsForACertainPeriodAndPerson(Mockito.eq(date), Mockito.eq(date), Mockito.eq(admin1));
+            .getApplicationsForACertainPeriodAndPerson(eq(date), eq(date), eq(admin1));
         Mockito.verify(applicationService)
-            .getApplicationsForACertainPeriodAndPerson(Mockito.eq(date), Mockito.eq(date), Mockito.eq(admin2));
+            .getApplicationsForACertainPeriodAndPerson(eq(date), eq(date), eq(admin2));
         Mockito.verify(applicationService)
-            .getApplicationsForACertainPeriodAndPerson(Mockito.eq(date), Mockito.eq(date), Mockito.eq(marketing1));
+            .getApplicationsForACertainPeriodAndPerson(eq(date), eq(date), eq(marketing1));
         Mockito.verify(applicationService)
-            .getApplicationsForACertainPeriodAndPerson(Mockito.eq(date), Mockito.eq(date), Mockito.eq(marketing2));
+            .getApplicationsForACertainPeriodAndPerson(eq(date), eq(date), eq(marketing2));
         Mockito.verify(applicationService)
-            .getApplicationsForACertainPeriodAndPerson(Mockito.eq(date), Mockito.eq(date), Mockito.eq(marketing3));
+            .getApplicationsForACertainPeriodAndPerson(eq(date), eq(date), eq(marketing3));
 
         // Ensure does not fetch applications for leave for the given person
         Mockito.verify(applicationService, Mockito.never())
-            .getApplicationsForACertainPeriodAndPerson(Mockito.eq(date), Mockito.eq(date), Mockito.eq(person));
+            .getApplicationsForACertainPeriodAndPerson(eq(date), eq(date), eq(person));
     }
 
 
@@ -358,11 +352,11 @@ public class DepartmentServiceImplTest {
         Mockito.when(departmentDAO.getAssignedDepartments(person)).thenReturn(Arrays.asList(admins, marketing));
 
         Mockito.when(applicationService.getApplicationsForACertainPeriodAndPerson(Mockito.any(DateMidnight.class),
-                    Mockito.any(DateMidnight.class), Mockito.eq(admin1)))
+                    Mockito.any(DateMidnight.class), eq(admin1)))
             .thenReturn(Arrays.asList(waitingApplication, otherApplication));
 
         Mockito.when(applicationService.getApplicationsForACertainPeriodAndPerson(Mockito.any(DateMidnight.class),
-                    Mockito.any(DateMidnight.class), Mockito.eq(marketing1)))
+                    Mockito.any(DateMidnight.class), eq(marketing1)))
             .thenReturn(Collections.singletonList(allowedApplication));
 
         List<Application> applications = sut.getApplicationsForLeaveOfMembersInDepartmentsOfPerson(person, date, date);

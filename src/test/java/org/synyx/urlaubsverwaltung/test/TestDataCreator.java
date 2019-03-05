@@ -27,6 +27,8 @@ import org.synyx.urlaubsverwaltung.core.sicknote.SickNote;
 import org.synyx.urlaubsverwaltung.core.sicknote.SickNoteCategory;
 import org.synyx.urlaubsverwaltung.core.sicknote.SickNoteStatus;
 import org.synyx.urlaubsverwaltung.core.sicknote.SickNoteType;
+import org.synyx.urlaubsverwaltung.core.sync.absence.AbsenceMapping;
+import org.synyx.urlaubsverwaltung.core.sync.absence.AbsenceType;
 import org.synyx.urlaubsverwaltung.core.util.DateUtil;
 import org.synyx.urlaubsverwaltung.core.workingtime.WorkingTime;
 
@@ -144,7 +146,24 @@ public final class TestDataCreator {
         return application;
     }
 
+    public static Application anyFullDayApplication(Person person) {
+        Application application = anyApplication();
+        application.setPerson(person);
+        return application;
+    }
+
+    public static Application anyApplication() {
+        Application application = new Application();
+        application.setPerson(createPerson());
+        application.setDayLength(DayLength.FULL);
+        return application;
+    }
+
     // Sick note -------------------------------------------------------------------------------------------------------
+
+    public static SickNote anySickNote() {
+        return createSickNote(createPerson());
+    }
 
     public static SickNote createSickNote(Person person) {
 
@@ -191,11 +210,6 @@ public final class TestDataCreator {
     }
 
     // Holidays account ------------------------------------------------------------------------------------------------
-
-    public static Account createHolidaysAccount(Person person) {
-
-        return createHolidaysAccount(person, DateTime.now().getYear());
-    }
 
     public static Account createHolidaysAccount(Person person, int year) {
 
@@ -270,5 +284,12 @@ public final class TestDataCreator {
         vacationTypes.add(vacationType4);
 
         return vacationTypes;
+    }
+
+    public static AbsenceMapping anyAbsenceMapping() {
+        AbsenceMapping absenceMapping = new AbsenceMapping();
+        absenceMapping.setEventId("eventId");
+        absenceMapping.setAbsenceType(AbsenceType.VACATION);
+        return absenceMapping;
     }
 }

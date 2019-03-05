@@ -1,7 +1,6 @@
 package org.synyx.urlaubsverwaltung.restapi.vacationoverview;
 
 import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.synyx.urlaubsverwaltung.core.department.Department;
@@ -18,9 +17,9 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.synyx.urlaubsverwaltung.core.holiday.DayOfMonth.TypeOfDay.WORKDAY;
@@ -34,7 +33,7 @@ public class VacationOverviewServiceTest {
     private PublicHolidaysService publicHolidayService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.departmentService = mock(DepartmentService.class);
         this.workingTimeService = mock(WorkingTimeService.class);
         this.publicHolidayService = mock(PublicHolidaysService.class);
@@ -42,7 +41,7 @@ public class VacationOverviewServiceTest {
     }
 
     @Test
-    public void assertVacationOverviewsForExistingDepartment() throws Exception {
+    public void assertVacationOverviewsForExistingDepartment() {
         Department department = new Department();
         String departmentName = "Admins";
         department.setName(departmentName);
